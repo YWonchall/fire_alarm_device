@@ -1,0 +1,82 @@
+C51 COMPILER V9.59.0.0   HC_05                                                             10/14/2019 19:17:44 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE HC_05
+OBJECT MODULE PLACED IN .\Objects\HC-05.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE HC-05.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\HC-
+                    -05.lst) TABS(2) OBJECT(.\Objects\HC-05.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          extern unsigned int smk;
+   4          extern unsigned int tmp;
+   5          extern unsigned char RxdBuf;
+   6          unsigned char *ptrTxd;
+   7          unsigned char cntTxd = 0;
+   8          unsigned char NowData[] = {'T','e','m','p','e','t','u','r','e',':','0','0','.','0',
+   9                                  ' ',' ','S','m','o','k','e',':','0','0','\n'};
+  10          void configUART(unsigned int);
+  11                                  
+  12          void sendData()
+  13          {
+  14   1        NowData[10] = tmp/100 + 48;
+  15   1        NowData[11] = tmp%100/10 + 48;
+  16   1        NowData[13] = tmp%10 + 48;
+  17   1        NowData[22] = smk/10 + 48;
+  18   1        NowData[23] = smk%10 + 48;
+  19   1        
+  20   1        ptrTxd = NowData;
+  21   1        cntTxd = sizeof(NowData);
+  22   1        TI = 1;
+  23   1        
+  24   1      }
+  25          
+  26          
+  27          void configUART(unsigned int baud)
+  28          {
+  29   1        SCON = 0x50;
+  30   1        TMOD &= 0x0F;
+  31   1        TMOD |= 0x20;
+  32   1        TH1 = 256 - (11059200/12/32)/baud;
+  33   1        TL1 = TH1;
+  34   1        ET1 = 0;
+  35   1        ES = 1;
+  36   1        TR1 = 1;
+  37   1      }
+  38          
+  39          void interruptUART() interrupt 4
+  40          {
+  41   1        if(RI)
+  42   1        {
+  43   2          RI = 0;
+  44   2          RxdBuf = SBUF;
+  45   2        }
+  46   1        if(TI)
+  47   1        {
+  48   2          TI = 0;
+  49   2          if(cntTxd > 0)
+  50   2          {
+  51   3            SBUF = *ptrTxd;
+  52   3            cntTxd--;
+  53   3            ptrTxd++;
+  54   3          }
+C51 COMPILER V9.59.0.0   HC_05                                                             10/14/2019 19:17:44 PAGE 2   
+
+  55   2        }
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    228    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     29    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

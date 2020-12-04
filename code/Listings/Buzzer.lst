@@ -1,0 +1,55 @@
+C51 COMPILER V9.59.0.0   BUZZER                                                            10/14/2019 19:17:43 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE BUZZER
+OBJECT MODULE PLACED IN .\Objects\Buzzer.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Buzzer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Bu
+                    -zzer.lst) TABS(2) OBJECT(.\Objects\Buzzer.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          sbit BUZZ = P2^5;
+   4          
+   5          unsigned char T1RH = 0;
+   6          unsigned char T1RL = 0;
+   7          
+   8          void openBuzzer(unsigned int frequ)
+   9          {
+  10   1        unsigned int reload;
+  11   1        reload = 65536 - (11059200/12)/(frequ*2);
+  12   1        RCAP2H = (unsigned char)(reload>>8);
+  13   1        RCAP2L = (unsigned char)reload;
+  14   1        
+  15   1        ET2 = 1;
+  16   1        TR2 = 1;
+  17   1      }
+  18          
+  19          void stopBuzzer()
+  20          {
+  21   1        ET2 = 0;
+  22   1        TR2 = 0;
+  23   1        BUZZ = 1;
+  24   1      }
+  25          
+  26          void interruptTimer2() interrupt 5
+  27          {
+  28   1      
+  29   1        TF2 = 0;
+  30   1        BUZZ = ~BUZZ;
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     50    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

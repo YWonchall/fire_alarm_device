@@ -1,0 +1,24 @@
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          09/14/2019 16:55:10 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\KeyBoard.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE KeyBoard.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -KeyBoard.lst) TABS(2) OBJECT(.\Objects\KeyBoard.obj)
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

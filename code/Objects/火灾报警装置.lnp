@@ -1,0 +1,10 @@
+".\Objects\STARTUP.obj",
+".\Objects\MQ-2.obj",
+".\Objects\LCD1602.obj",
+".\Objects\DS18B20.obj",
+".\Objects\Buzzer.obj",
+".\Objects\Motor.obj",
+".\Objects\HC-05.obj",
+".\Objects\main.obj" 
+TO ".\Objects\火灾报警装置" 
+PRINT(".\Listings\火灾报警装置.m51") RAMSIZE(256) 
