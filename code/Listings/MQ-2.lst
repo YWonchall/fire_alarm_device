@@ -1,0 +1,109 @@
+C51 COMPILER V9.59.0.0   MQ_2                                                              10/14/2019 19:17:43 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MQ_2
+OBJECT MODULE PLACED IN .\Objects\MQ-2.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE MQ-2.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\MQ-2
+                    -.lst) TABS(2) OBJECT(.\Objects\MQ-2.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <intrins.h>
+   3          
+   4          sbit CS = P1^4;
+   5          sbit Clk = P1^2;
+   6          sbit DATI = P1^3;
+   7          sbit DATO = P1^3;
+   8          
+   9          unsigned int ADC0832(unsigned char CH)
+  10          {
+  11   1           unsigned int i,test,adval,dat1;
+  12   1           adval = 0x00;
+  13   1           test = 0x00;
+  14   1           Clk = 0;      
+  15   1           DATI = 1;
+  16   1          _nop_();
+  17   1          CS = 0;
+  18   1          _nop_();
+  19   1          Clk = 1;
+  20   1         _nop_();
+  21   1      
+  22   1      
+  23   1         if ( CH == 0x00 )     
+  24   1         {
+  25   2             Clk = 0;
+  26   2             DATI = 1;      
+  27   2             _nop_();
+  28   2            Clk = 1;
+  29   2              _nop_();
+  30   2              Clk = 0;
+  31   2            DATI = 0;      
+  32   2            _nop_();
+  33   2            Clk = 1;
+  34   2            _nop_();
+  35   2          } 
+  36   1          else
+  37   1          {
+  38   2             Clk = 0;
+  39   2          DATI = 1;      
+  40   2            _nop_();
+  41   2            Clk = 1;
+  42   2            _nop_();
+  43   2            Clk = 0;
+  44   2            DATI = 1;      
+  45   2          _nop_();
+  46   2           Clk = 1;
+  47   2           _nop_();
+  48   2         }
+  49   1      
+  50   1            Clk = 0;
+  51   1            DATI = 1;
+  52   1         for( i = 0;i < 8;i++ )     
+  53   1          {
+  54   2             _nop_();
+C51 COMPILER V9.59.0.0   MQ_2                                                              10/14/2019 19:17:43 PAGE 2   
+
+  55   2             adval <<= 1;
+  56   2             Clk = 1;
+  57   2             _nop_();
+  58   2             Clk = 0;
+  59   2             if (DATO)
+  60   2                adval |= 0x01;
+  61   2            else
+  62   2                adval |= 0x00;
+  63   2          }
+  64   1            for (i = 0; i < 8; i++)      
+  65   1            {
+  66   2                 test >>= 1;
+  67   2                 if (DATO)
+  68   2                    test |= 0x80;
+  69   2                 else 
+  70   2                    test |= 0x00;
+  71   2                _nop_();
+  72   2                Clk = 1;
+  73   2                _nop_();
+  74   2                Clk = 0;
+  75   2            }
+  76   1            //if (adval == test)     
+  77   1             dat1 = test;
+  78   1             nop_();
+  79   1             CS = 1;       
+  80   1             DATO = 1;
+  81   1             Clk = 1;
+  82   1             return dat1;
+  83   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,88 @@
+C51 COMPILER V9.59.0.0   MOTOR                                                             10/14/2019 19:17:44 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\Objects\Motor.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Motor.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Mot
+                    -or.lst) TABS(2) OBJECT(.\Objects\Motor.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          sbit MOTOR = P3^5;
+   4          
+   5          unsigned char HighRH, HighRL, LowRH, LowRL;
+   6          
+   7          void configPWM(unsigned int fre, unsigned char dc)
+   8          {
+   9   1        unsigned high, low;
+  10   1        unsigned long tmp;
+  11   1        
+  12   1        tmp = (11059200/12)/fre;
+  13   1        high = (tmp*dc)/100;
+  14   1        low = tmp - high;
+  15   1        high = 65536 - high +12;
+  16   1        low = 65536 - low + 12;
+  17   1        HighRH = (unsigned char)(high>>8);
+  18   1        HighRL = (unsigned char)(high);
+  19   1        LowRH = (unsigned char)(low>>8);
+  20   1        LowRL = (unsigned char)(low);
+  21   1        
+  22   1        TMOD &= 0xF0;
+  23   1        TMOD |= 0x01;
+  24   1        TH0 = HighRH;
+  25   1        TL0 = HighRL;
+  26   1        ET0 = 1;
+  27   1        TR0 = 1;
+  28   1      }
+  29          
+  30          void closePWM()
+  31          {
+  32   1        ET0 = 0;
+  33   1        TR0 = 0;
+  34   1        MOTOR = 1;
+  35   1      }
+  36          void Motor(unsigned char sta)
+  37          {
+  38   1        switch(sta)
+  39   1        {
+  40   2          case 0: {closePWM(); break;}
+  41   2          case 1: {configPWM(200, 40); break;}
+  42   2          case 2: {closePWM(); MOTOR = 0; break;}
+  43   2          default: break;
+  44   2        }
+  45   1      }
+  46          
+  47          
+  48          void interruptTimer0() interrupt 1 
+  49          {
+  50   1        if(MOTOR == 1)
+  51   1        {
+  52   2          TH0 = LowRH;
+  53   2          TL0 = LowRL;
+  54   2          MOTOR = 0;
+C51 COMPILER V9.59.0.0   MOTOR                                                             10/14/2019 19:17:44 PAGE 2   
+
+  55   2        }
+  56   1        else
+  57   1        {
+  58   2          TH0 = HighRH;
+  59   2          TL0 = HighRL;
+  60   2          MOTOR = 1;
+  61   2        }
+  62   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    164    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
