@@ -61,7 +61,7 @@
 
 ## 原理图
 
-![image-20201204104917097](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20201204104917097.png)
+![image-20201204104917097](images/image7.png)
 
 - 原理图用的是AD17自行绘制的，毕竟不是学这个的，所以画的不是很专业，大致一看即可。
 - github有pdf版和源文件，需要可自己去下载。
